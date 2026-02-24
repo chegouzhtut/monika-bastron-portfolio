@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monika Bastron — Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d0c0a;
+    --bg2: #131210;
+    --cream: #f0ebe2;
+    --gold: #c9a96e;
+    --gold2: #e8c98a;
+    --muted: #5a5650;
+    --accent: #d4826a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* CURSOR */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(201,169,110,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.18s ease;
+  }
+  body:hover .cursor-ring { opacity: 1; }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9000;
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem;
+    mix-blend-mode: normal;
+  }
+  nav::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(13,12,10,0.9), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 3rem 6rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-name {
+    font-size: clamp(4rem, 7vw, 9rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 340px;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+  }
+  .btn-primary {
+    padding: 0.9rem 2.5rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+  .btn-primary:hover { color: var(--bg); }
+  .btn-primary:hover::before { transform: translateX(0); }
+
+  .hero-scroll {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-scroll::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--muted);
+    animation: lineGrow 1.5s 1.5s both;
+  }
+  @keyframes lineGrow { from { width: 0; } to { width: 40px; } }
+
+  /* HERO RIGHT — visual composition */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-visual {
+    position: absolute;
+    inset: 0;
+  }
+  /* Big geometric shapes */
+  .hero-circle {
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 40%, rgba(201,169,110,0.15), transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+  }
+  .hero-ring {
+    position: absolute;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,169,110,0.2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 30s linear infinite;
+  }
+  .hero-ring-2 {
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,169,110,0.1);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 20s linear infinite reverse;
+  }
+  @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  /* floating UI mockups */
+  .mockup-card {
+    position: absolute;
+    background: rgba(19,18,16,0.95);
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 12px;
+    padding: 1.2rem;
+    backdrop-filter: blur(10px);
+  }
+  .mockup-1 {
+    width: 200px;
+    top: 20%;
+    right: 15%;
+    animation: float1 5s ease-in-out infinite;
+    opacity: 0;
+    animation: fadeUp 1s 1s forwards, float1 5s 2s ease-in-out infinite;
+  }
+  .mockup-2 {
+    width: 160px;
+    bottom: 25%;
+    left: 10%;
+    opacity: 0;
+    animation: fadeUp 1s 1.2s forwards, float2 6s 2.2s ease-in-out infinite;
+  }
+  .mockup-3 {
+    width: 130px;
+    top: 55%;
+    right: 8%;
+    opacity: 0;
+    animation: fadeUp 1s 1.4s forwards, float1 7s 2.4s ease-in-out infinite;
+  }
+  @keyframes float1 {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes float2 {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(10px); }
+  }
+
+  .mockup-dot-row {
+    display: flex; gap: 5px; margin-bottom: 0.8rem;
+  }
+  .mockup-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .d-red { background: #e06c6c; }
+  .d-yellow { background: var(--gold); }
+  .d-green { background: #7acfa0; }
+  .mockup-bar {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(201,169,110,0.2);
+    margin-bottom: 6px;
+  }
+  .mockup-bar.short { width: 60%; }
+  .mockup-bar.gold { background: rgba(201,169,110,0.5); width: 80%; }
+  .mockup-img-placeholder {
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(201,169,110,0.1), rgba(212,130,106,0.1));
+    border-radius: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* palette chip mockup */
+  .palette-chip { display: flex; gap: 4px; }
+  .chip { width: 20px; height: 20px; border-radius: 4px; }
+
+  .hero-number {
+    position: absolute;
+    bottom: 6rem;
+    right: 3rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* DIVIDER */
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,169,110,0.3), transparent);
+  }
+
+  /* ABOUT */
+  .about {
+    padding: 10rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .about-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding-top: 0.5rem;
+  }
+  .about-content h2 {
+    font-size: clamp(2.5rem, 4vw, 5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+  }
+  .about-content h2 em { font-style: italic; color: var(--gold); }
+  .about-content p {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: rgba(240,235,226,0.7);
+    max-width: 600px;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+  .about-stats {
+    display: flex;
+    gap: 4rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(201,169,110,0.15);
+  }
+  .stat-num {
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* SERVICES */
+  .services {
+    padding: 8rem 3rem;
+    background: var(--bg2);
+    position: relative;
+    overflow: hidden;
+  }
+  .services::before {
+    content: 'SERVICES';
+    position: absolute;
+    top: 4rem;
+    right: -2rem;
+    font-size: 14rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.03);
+    font-family: 'Cormorant Garamond', serif;
+    pointer-events: none;
+    letter-spacing: -0.02em;
+  }
+  .services-inner { max-width: 1400px; margin: 0 auto; }
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 6rem;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-size: clamp(2.5rem, 4vw, 5rem);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(201,169,110,0.1);
+    border: 1px solid rgba(201,169,110,0.1);
+  }
+  .service-item {
+    background: var(--bg2);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+    group: true;
+  }
+  .service-item:hover { background: rgba(201,169,110,0.04); }
+  .service-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+  .service-item:hover::after { width: 100%; }
+
+  .service-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+  .service-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.5rem;
+    color: var(--gold);
+  }
+  .service-icon svg { width: 100%; height: 100%; }
+  .service-name {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .service-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 1.5rem;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border: 1px solid rgba(201,169,110,0.2);
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* PROCESS */
+  .process {
+    padding: 10rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .process-header { margin-bottom: 6rem; }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    left: 3rem;
+    right: 3rem;
+    height: 1px;
+    background: linear-gradient(to right, rgba(201,169,110,0.4), rgba(201,169,110,0.1));
+  }
+  .step { position: relative; }
+  .step-num {
+    width: 4rem; height: 4rem;
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    background: var(--bg);
+    position: relative;
+    z-index: 1;
+  }
+  .step-title {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 0.8rem;
+  }
+  .step-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  /* WORK / SELECTED PROJECTS */
+  .work {
+    padding: 8rem 3rem;
+    background: var(--bg2);
+    overflow: hidden;
+  }
+  .work-inner { max-width: 1400px; margin: 0 auto; }
+  .work-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5rem;
+  }
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .project-card {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    cursor: none;
+    background: var(--bg);
+  }
+  .project-card.large { aspect-ratio: 16/9; grid-column: span 2; }
+  .project-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s ease;
+  }
+  .project-card:hover .project-bg { transform: scale(1.04); }
+
+  /* Generative project visuals */
+  .proj-1 { background: linear-gradient(135deg, #1a1508 0%, #2d2010 40%, #1a1508 100%); }
+  .proj-1-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .proj-circles {
+    position: relative;
+    width: 200px; height: 200px;
+  }
+  .pc { position: absolute; border-radius: 50%; border: 1px solid rgba(201,169,110,0.3); }
+  .pc1 { inset: 0; border-color: rgba(201,169,110,0.4); }
+  .pc2 { inset: 20px; border-color: rgba(201,169,110,0.25); }
+  .pc3 { inset: 40px; background: rgba(201,169,110,0.08); }
+  .pc-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+  .proj-2 { background: linear-gradient(160deg, #0e0e14 0%, #141820 100%); }
+  .proj-2-grid {
+    position: absolute;
+    inset: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .proj-2-cell {
+    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+  }
+  .proj-2-cell.highlight { background: rgba(201,169,110,0.15); }
+  .proj-2-cell.accent { background: rgba(212,130,106,0.15); }
+
+  .proj-3 { background: linear-gradient(120deg, #140d08 0%, #1c1208 100%); }
+  .proj-3-typo {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0;
+  }
+  .proj-3-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10rem;
+    line-height: 0.85;
+    font-weight: 300;
+    color: rgba(201,169,110,0.12);
+    letter-spacing: -0.05em;
+  }
+
+  .proj-4 { background: #0a0e12; }
+  .proj-4-icons {
+    position: absolute;
+    inset: 20px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 12px;
+    opacity: 0.6;
+  }
+  .proj-4-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    opacity: 0.3;
+    font-size: 1.2rem;
+  }
+  .proj-4-icon.bright { opacity: 0.8; }
+
+  .project-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 2rem;
+    background: linear-gradient(to top, rgba(13,12,10,0.95), transparent);
+    transform: translateY(0);
+  }
+  .project-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .project-title {
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+  .project-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    opacity: 0;
+    transition: all 0.3s;
+    transform: translateY(-8px);
+  }
+  .project-card:hover .project-arrow {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SKILLS MARQUEE */
+  .marquee-section {
+    padding: 4rem 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(201,169,110,0.1);
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 4rem;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .marquee-dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 10rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .testimonials-header { margin-bottom: 5rem; }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .testimonial-card {
+    padding: 2.5rem;
+    border: 1px solid rgba(201,169,110,0.1);
+    position: relative;
+  }
+  .testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    font-size: 6rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.1);
+    line-height: 1;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .testimonial-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    font-weight: 300;
+    color: rgba(240,235,226,0.75);
+    margin-bottom: 2rem;
+    padding-top: 1rem;
+  }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .author-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(201,169,110,0.3), rgba(212,130,106,0.3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+  }
+  .author-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--cream);
+    margin-bottom: 2px;
+  }
+  .author-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* CONTACT */
+  .contact {
+    padding: 10rem 3rem;
+    background: var(--bg2);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,169,110,0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .contact h2 {
+    font-size: clamp(3rem, 7vw, 9rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .contact h2 em { color: var(--gold); font-style: italic; }
+  .contact-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 4rem;
+  }
+  .contact-email {
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    font-weight: 300;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,169,110,0.3);
+    padding-bottom: 0.3rem;
+    transition: border-color 0.3s;
+    font-style: italic;
+  }
+  .contact-email:hover { border-color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(201,169,110,0.1);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .footer-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+  .reveal-delay-6 { transition-delay: 0.6s; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .about { grid-template-columns: 1fr; gap: 2rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .work-grid { grid-template-columns: 1fr; }
+    .project-card.large { grid-column: span 1; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">M. Bastron</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Available for projects · 2025</p>
+    <h1 class="hero-name">
+      Monika<br><em>Bastron</em>
+    </h1>
+    <p class="hero-desc">
+      A digital designer crafting thoughtful visual identities, immersive web experiences, and iconic graphics — where form meets intention.
+    </p>
+    <div class="hero-cta">
+      <a href="#work" class="btn-primary">View Work</a>
+      <span class="hero-scroll">Scroll</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-circle"></div>
+      <div class="hero-ring"></div>
+      <div class="hero-ring-2"></div>
+
+      <!-- UI Mockup 1 - Website preview -->
+      <div class="mockup-card mockup-1">
+        <div class="mockup-dot-row">
+          <div class="mockup-dot d-red"></div>
+          <div class="mockup-dot d-yellow"></div>
+          <div class="mockup-dot d-green"></div>
+        </div>
+        <div class="mockup-img-placeholder">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.5)" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+          </svg>
+        </div>
+        <div class="mockup-bar gold"></div>
+        <div class="mockup-bar short"></div>
+        <div class="mockup-bar"></div>
+      </div>
+
+      <!-- Mockup 2 - Palette -->
+      <div class="mockup-card mockup-2">
+        <div style="font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.8rem;">COLOR PALETTE</div>
+        <div class="palette-chip">
+          <div class="chip" style="background:#c9a96e;"></div>
+          <div class="chip" style="background:#d4826a;"></div>
+          <div class="chip" style="background:#0d0c0a;"></div>
+          <div class="chip" style="background:#f0ebe2;"></div>
+          <div class="chip" style="background:#5a5650;"></div>
+        </div>
+        <div style="height:1px;background:rgba(201,169,110,0.1);margin:0.8rem 0;"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.5rem;color:var(--muted);">#C9A96E · Warm Gold</div>
+      </div>
+
+      <!-- Mockup 3 - Icon set -->
+      <div class="mockup-card mockup-3">
+        <div style="font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.8rem;">ICON SET</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.7)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.7)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.7)" stroke-width="1.5"><polygon points="12 2 22 22 2 22"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.4)" stroke-width="1.5"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.4)" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.4)" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+      </div>
+
+      <div class="hero-number">2025</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-label reveal">About</div>
+  <div class="about-content">
+    <h2 class="reveal reveal-delay-1">Designing with<br>purpose and <em>poetry</em></h2>
+    <p class="reveal reveal-delay-2">Based in Berlin, I am a multidisciplinary designer obsessed with the intersection of visual clarity and emotional resonance. My work spans brand identities, product interfaces, illustration systems, and everything in between.</p>
+    <p class="reveal reveal-delay-3">With over 7 years in the craft, I've collaborated with startups, luxury brands, and creative studios — bringing a considered, craft-driven approach to every pixel.</p>
+    <div class="about-stats reveal reveal-delay-4">
+      <div class="stat">
+        <div class="stat-num">7+</div>
+        <div class="stat-label">Years of craft</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">80+</div>
+        <div class="stat-label">Projects done</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">Happy clients</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-header reveal">
+      <div>
+        <div class="section-label">What I do</div>
+        <h2 class="section-title">Services &<br><em>expertise</em></h2>
+      </div>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-item reveal">
+        <div class="service-num">01</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="4" y="8" width="40" height="28" rx="3"/>
+            <path d="M16 44h16M24 36v8"/>
+            <path d="M4 28h40"/>
+            <circle cx="24" cy="18" r="4"/>
+          </svg>
+        </div>
+        <div class="service-name">Web Design</div>
+        <div class="service-desc">Landing pages, portfolios, and full product interfaces. From concept to pixel-perfect Figma handoffs your developers will love.</div>
+        <div class="service-tags">
+          <span class="tag">Figma</span>
+          <span class="tag">Prototyping</span>
+          <span class="tag">UX/UI</span>
+          <span class="tag">Responsive</span>
+        </div>
+      </div>
+
+      <div class="service-item reveal reveal-delay-1">
+        <div class="service-num">02</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="24" cy="24" r="10"/>
+            <circle cx="24" cy="24" r="20" stroke-dasharray="4 3"/>
+            <path d="M24 4v8M24 36v8M4 24h8M36 24h8"/>
+          </svg>
+        </div>
+        <div class="service-name">Brand Identity</div>
+        <div class="service-desc">Logo design, visual systems, style guides and brand books. Building cohesive identities that communicate a clear story at every touchpoint.</div>
+        <div class="service-tags">
+          <span class="tag">Logo</span>
+          <span class="tag">Brand System</span>
+          <span class="tag">Guidelines</span>
+        </div>
+      </div>
+
+      <div class="service-item reveal reveal-delay-2">
+        <div class="service-num">03</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M6 36l10-10 6 6 8-12 12 16"/>
+            <rect x="4" y="4" width="40" height="40" rx="2"/>
+          </svg>
+        </div>
+        <div class="service-name">Illustration</div>
+        <div class="service-desc">Custom vector and digital illustrations for editorial, marketing, and product use. Each piece crafted to serve both story and aesthetics.</div>
+        <div class="service-tags">
+          <span class="tag">Vector</span>
+          <span class="tag">Editorial</span>
+          <span class="tag">Character</span>
+          <span class="tag">Scene</span>
+        </div>
+      </div>
+
+      <div class="service-item reveal reveal-delay-3">
+        <div class="service-num">04</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="6" width="16" height="16" rx="2"/>
+            <rect x="26" y="6" width="16" height="16" rx="2"/>
+            <rect x="6" y="26" width="16" height="16" rx="2"/>
+            <rect x="26" y="26" width="16" height="16" rx="2"/>
+          </svg>
+        </div>
+        <div class="service-name">Icon Systems</div>
+        <div class="service-desc">Custom icon libraries for apps, websites and design systems. Consistent strokes, pixel-perfect grids, delivered in multiple formats.</div>
+        <div class="service-tags">
+          <span class="tag">SVG</span>
+          <span class="tag">Icon Set</span>
+          <span class="tag">Design System</span>
+        </div>
+      </div>
+
+      <div class="service-item reveal reveal-delay-4">
+        <div class="service-num">05</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M8 32l8-20 6 12 4-8 6 16 6-8 4 8"/>
+            <circle cx="8" cy="32" r="2" fill="currentColor"/>
+            <circle cx="42" cy="24" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="service-name">Motion & Animation</div>
+        <div class="service-desc">Micro-interactions, animated brand assets, Lottie files and motion specs. Bringing static designs to life with purposeful movement.</div>
+        <div class="service-tags">
+          <span class="tag">Lottie</span>
+          <span class="tag">After Effects</span>
+          <span class="tag">CSS Motion</span>
+        </div>
+      </div>
+
+      <div class="service-item reveal reveal-delay-5">
+        <div class="service-num">06</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M12 8h24l4 8-4 8H12l-4-8z"/>
+            <path d="M12 32h24l4 8-4 8H12l-4-8z"/>
+            <path d="M16 24h16"/>
+          </svg>
+        </div>
+        <div class="service-name">Typography & Print</div>
+        <div class="service-desc">Editorial layouts, posters, lookbooks, and type systems. Meticulous attention to hierarchy, spacing, and the visual weight of words.</div>
+        <div class="service-tags">
+          <span class="tag">Editorial</span>
+          <span class="tag">Print</span>
+          <span class="tag">Typography</span>
+          <span class="tag">Poster</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="process-header reveal">
+    <div class="section-label">How I work</div>
+    <h2 class="section-title">My <em>process</em></h2>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Discovery</div>
+      <div class="step-desc">Deep-dive into your goals, audience, and competitive landscape. Defining the problem before touching a tool.</div>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <div class="step-title">Concepting</div>
+      <div class="step-desc">Moodboards, sketches, and direction explorations. Aligning on aesthetics and tone before investing in execution.</div>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <div class="step-title">Design</div>
+      <div class="step-desc">Full design production in Figma with components, variants, and interactive prototypes. Pixel craft at its finest.</div>
+    </div>
+    <div class="step reveal reveal-delay-3">
+      <div class="step-num">04</div>
+      <div class="step-title">Delivery</div>
+      <div class="step-desc">Clean handoff with assets, specs, and brand guidelines. Ongoing support to ensure everything lands perfectly.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="marquee-dot"></span>Web Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Brand Identity</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Icon Systems</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Motion Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Illustration</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Typography</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>UI / UX</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Print Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Design Systems</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Web Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Brand Identity</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Icon Systems</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Motion Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Illustration</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Typography</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>UI / UX</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Print Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Design Systems</span>
+  </div>
+</div>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="work-inner">
+    <div class="work-header reveal">
+      <div>
+        <div class="section-label">Portfolio</div>
+        <h2 class="section-title">Selected <em>work</em></h2>
+      </div>
+      <a href="#contact" class="btn-primary" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;padding:0.9rem 2rem;border:1px solid rgba(201,169,110,0.3);color:var(--muted);transition:all 0.3s;">All projects →</a>
+    </div>
+
+    <div class="work-grid">
+      <!-- Project 1 - Large -->
+      <div class="project-card large reveal">
+        <div class="project-bg proj-1">
+          <div class="proj-1-inner">
+            <div class="proj-circles">
+              <div class="pc pc1"></div>
+              <div class="pc pc2"></div>
+              <div class="pc pc3"></div>
+              <div class="pc pc-dot"></div>
+            </div>
+            <div style="position:absolute;right:15%;top:25%;font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(201,169,110,0.2);font-style:italic;">Luna</div>
+            <div style="position:absolute;right:15%;top:50%;font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(201,169,110,0.3);letter-spacing:0.2em;">WELLNESS · BRAND</div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">Brand Identity</div>
+          <div class="project-title">Luna Wellness — Full Identity</div>
+        </div>
+        <div class="project-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-bg proj-2">
+          <div class="proj-2-grid">
+            <div class="proj-2-cell highlight"></div>
+            <div class="proj-2-cell"></div>
+            <div class="proj-2-cell accent"></div>
+            <div class="proj-2-cell"></div>
+            <div class="proj-2-cell"></div>
+            <div class="proj-2-cell highlight"></div>
+            <div class="proj-2-cell"></div>
+            <div class="proj-2-cell accent"></div>
+            <div class="proj-2-cell"></div>
+            <div class="proj-2-cell"></div>
+            <div class="proj-2-cell highlight"></div>
+            <div class="proj-2-cell"></div>
+          </div>
+          <div style="position:absolute;bottom:30%;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:0.6rem;color:rgba(201,169,110,0.5);letter-spacing:0.2em;white-space:nowrap;">MOBILE APP · 2024</div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">UI Design</div>
+          <div class="project-title">Kira Finance App</div>
+        </div>
+        <div class="project-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-bg proj-3">
+          <div class="proj-3-typo">
+            <div class="proj-3-letter">Ab</div>
+            <div class="proj-3-letter" style="color:rgba(212,130,106,0.12);">Cd</div>
+            <div style="position:absolute;font-family:'DM Mono',monospace;font-size:0.6rem;color:rgba(201,169,110,0.5);letter-spacing:0.3em;text-transform:uppercase;">Type System</div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">Typography</div>
+          <div class="project-title">Vela Editorial Type System</div>
+        </div>
+        <div class="project-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="project-card reveal reveal-delay-3">
+        <div class="project-bg proj-4">
+          <div class="proj-4-icons">
+            <div class="proj-4-icon bright"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="proj-4-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <div class="proj-4-icon bright"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+            <div class="proj-4-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <div class="proj-4-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+            <div class="proj-4-icon bright"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div class="proj-4-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div class="proj-4-icon bright"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <div class="proj-4-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+            <div class="proj-4-icon bright"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="proj-4-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+            <div class="proj-4-icon bright"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-category">Icon Design</div>
+          <div class="project-title">Orion — 200 Icon Library</div>
+        </div>
+        <div class="project-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-header reveal">
+    <div class="section-label">Kind words</div>
+    <h2 class="section-title">What clients<br><em>say</em></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <p class="testimonial-text">Monika doesn't just design, she listens. The brand she created for us immediately communicated who we are and elevated every touchpoint of our business.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">SL</div>
+        <div>
+          <div class="author-name">Sophie Laurent</div>
+          <div class="author-role">Founder, Atelier Nord</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-1">
+      <p class="testimonial-text">The icon library she built for our app is incredibly cohesive and versatile. Our dev team loved the clean SVG handoffs. We'll be coming back for every new feature.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">MK</div>
+        <div>
+          <div class="author-name">Marcus Keller</div>
+          <div class="author-role">CPO, Kira Finance</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <p class="testimonial-text">Working with Monika felt like having an artistic director on the team. Her taste is impeccable and she brought ideas we would have never imagined on our own.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">IO</div>
+        <div>
+          <div class="author-name">Irina Okafor</div>
+          <div class="author-role">Head of Brand, Vela Media</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-label reveal" style="margin-bottom:2rem;">Let's work together</div>
+  <h2 class="reveal reveal-delay-1">Let's make<br>something <em>beautiful</em></h2>
+  <p class="contact-sub reveal reveal-delay-2">Available for freelance projects · Berlin / Remote</p>
+  <a href="mailto:hello@monikabastron.com" class="contact-email reveal reveal-delay-3">hello@monikabastron.com</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Monika Bastron. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="#">Behance</a></li>
+    <li><a href="#">Dribbble</a></li>
+    <li><a href="#">LinkedIn</a></li>
+    <li><a href="#">Instagram</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .project-card, .service-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+      ring.style.borderColor = 'rgba(201,169,110,0.6)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.borderColor = 'rgba(201,169,110,0.4)';
+    });
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
